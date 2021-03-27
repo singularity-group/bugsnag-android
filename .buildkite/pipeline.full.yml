@@ -43,7 +43,7 @@ steps:
           - "--app=/app/build/release/fixture-minimal.apk"
           - "--farm=bs"
           - "--device=ANDROID_9_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -98,7 +98,7 @@ steps:
           - "--app=/app/build/release/fixture-r16.apk"
           - "--farm=bs"
           - "--device=ANDROID_5_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
           - "--appium-version=1.8.0"
@@ -123,7 +123,7 @@ steps:
           - "--app=/app/build/release/fixture-r16.apk"
           - "--farm=bs"
           - "--device=ANDROID_5_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
           - "--appium-version=1.8.0"
@@ -148,7 +148,7 @@ steps:
           - "--app=/app/build/release/fixture-r16.apk"
           - "--farm=bs"
           - "--device=ANDROID_6_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -170,7 +170,7 @@ steps:
           - "--app=/app/build/release/fixture-r16.apk"
           - "--farm=bs"
           - "--device=ANDROID_6_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -192,7 +192,7 @@ steps:
           - "--app=/app/build/release/fixture-r19.apk"
           - "--farm=bs"
           - "--device=ANDROID_7_1"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -214,7 +214,7 @@ steps:
           - "--app=/app/build/release/fixture-r19.apk"
           - "--farm=bs"
           - "--device=ANDROID_7_1"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -236,7 +236,7 @@ steps:
           - "--app=/app/build/release/fixture-r19.apk"
           - "--farm=bs"
           - "--device=ANDROID_8_1"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -258,7 +258,7 @@ steps:
           - "--app=/app/build/release/fixture-r19.apk"
           - "--farm=bs"
           - "--device=ANDROID_8_1"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -280,7 +280,7 @@ steps:
           - "--app=/app/build/release/fixture-r21.apk"
           - "--farm=bs"
           - "--device=ANDROID_10_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -302,7 +302,7 @@ steps:
           - "--app=/app/build/release/fixture-r21.apk"
           - "--farm=bs"
           - "--device=ANDROID_10_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -328,7 +328,7 @@ steps:
           - "--app=/app/build/release/fixture-r21.apk"
           - "--farm=bs"
           - "--device=ANDROID_11_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -350,7 +350,7 @@ steps:
           - "--app=/app/build/release/fixture-r21.apk"
           - "--farm=bs"
           - "--device=ANDROID_11_0"
-          - "--fail-fast"
+          #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
