@@ -53,13 +53,13 @@ services:
       BUILDKITE_REPO:
 
   android-maze-runner:
-    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v5-cli
+    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:v5.0.0-cli
     environment:
       DEBUG:
       BUILDKITE:
       BUILDKITE_PIPELINE_NAME:
-      MAZE_DEVICE_FARM_USERNAME:
-      MAZE_DEVICE_FARM_ACCESS_KEY:
+      SAUCE_LABS_USERNAME:
+      SAUCE_LABS_ACCESS_KEY:
     volumes:
       - ./build:/app/build
       - ./maze-output:/app/maze-output
