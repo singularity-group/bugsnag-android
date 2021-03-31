@@ -12,8 +12,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r16.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_5_0"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=5"
           #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
@@ -33,8 +34,9 @@ steps:
         command:
         - "features/smoke_tests"
         - "--app=/app/build/release/fixture-r16.apk"
-        - "--farm=bs"
-        - "--device=ANDROID_6_0"
+        - "--farm=sl"
+        - "--os=android"
+        - "--os-version=6"
         #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
@@ -52,8 +54,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r19.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_7_1"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=7.1"
           #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
@@ -71,8 +74,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r19.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_8_1"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=8.1"
           #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
@@ -90,8 +94,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_9_0"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=9"
           #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
@@ -110,8 +115,9 @@ steps:
         command:
           - "features/full_tests/batch_1"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_9_0"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=9"
           - "--tags"
           - "not @Flaky"
     concurrency: 9
@@ -131,8 +137,9 @@ steps:
         command:
           - "features/full_tests/batch_2"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_9_0"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=9"
           - "--tags"
           - "not @Flaky"
     concurrency: 9

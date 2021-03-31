@@ -184,8 +184,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
-          - "--device=ANDROID_11_0"
+          - "--farm=sl"
+          - "--os=android"
+          - "--os-version=11"
           #- "--fail-fast"
     concurrency: 9
     concurrency_group: 'browserstack-app'
