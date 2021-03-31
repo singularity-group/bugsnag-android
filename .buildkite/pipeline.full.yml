@@ -47,8 +47,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android size reporting'
     depends_on: "android-ci"
@@ -67,8 +67,8 @@ steps:
           run: android-ci
     env:
       INSTRUMENTATION_DEVICES: '["Google Pixel-7.1"]'
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 9 Instrumentation tests'
     depends_on:
@@ -80,8 +80,8 @@ steps:
           run: android-ci
     env:
       INSTRUMENTATION_DEVICES: '["Google Pixel 3-9.0"]'
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 5 NDK r16 end-to-end tests - batch 1'
     depends_on:
@@ -103,8 +103,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
     soft_fail:
       - exit_status: "*"
 
@@ -128,8 +128,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
     soft_fail:
       - exit_status: "*"
 
@@ -153,8 +153,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 6 NDK r16 end-to-end tests - batch 2'
     depends_on:
@@ -176,8 +176,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 7 NDK r19 end-to-end tests - batch 1'
     depends_on:
@@ -199,8 +199,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 7 NDK r19 end-to-end tests - batch 2'
     depends_on:
@@ -222,8 +222,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 8.1 NDK r19 end-to-end tests - batch 1'
     depends_on:
@@ -245,8 +245,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 8.1 NDK r19 end-to-end tests - batch 2'
     depends_on:
@@ -268,8 +268,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 10 NDK r21 end-to-end tests - batch 1'
     depends_on:
@@ -291,8 +291,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 10 NDK r21 end-to-end tests - batch 2'
     depends_on:
@@ -314,8 +314,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   # Android 11+ devices have the GWP-ASAN tool enabled which randomly samples native memory to
   # to detect misuse (such as use-after-free, buffer overflow). If a failure is detected then
@@ -341,8 +341,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 11 NDK r21 end-to-end tests - batch 2'
     depends_on:
@@ -364,8 +364,8 @@ steps:
           #- "--fail-fast"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   #
   # Flaky scenarios.  These should be skipped if there are no scenarios annotated with the @Flaky tag (as we should
@@ -391,8 +391,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_4_4"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 5 NDK r16 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -414,8 +414,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_5_0"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 6 NDK r16 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -437,8 +437,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_6_0"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 7 NDK r19 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -460,8 +460,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_7_1"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 8.1 NDK r19 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -483,8 +483,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_8_1"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 10 NDK r21 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -506,8 +506,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_10_0"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':hankey: Flaky Android 11 NDK r21 end-to-end tests'
     skip: There are no @Flaky scenarios at present
@@ -529,8 +529,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_11_0"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   # If there is a tag present activate a manual publishing step
 

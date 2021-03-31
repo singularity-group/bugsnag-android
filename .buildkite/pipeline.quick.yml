@@ -16,8 +16,8 @@ steps:
           - "--os=android"
           - "--os-version=5"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
     soft_fail:
       - exit_status: "*"
 
@@ -38,8 +38,8 @@ steps:
         - "--os=android"
         - "--os-version=6"
         #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 7 NDK r19 smoke tests'
     key: 'android-7-smoke'
@@ -58,8 +58,8 @@ steps:
           - "--os=android"
           - "--os-version=7.1"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 8.1 NDK r19 smoke tests'
     key: 'android-8-1-smoke'
@@ -78,8 +78,8 @@ steps:
           - "--os=android"
           - "--os-version=8.1"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 9 NDK r21 smoke tests'
     key: 'android-9-smoke'
@@ -98,8 +98,8 @@ steps:
           - "--os=android"
           - "--os-version=9"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 1'
     depends_on:
@@ -120,8 +120,8 @@ steps:
           - "--os-version=9"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 2'
     depends_on:
@@ -142,8 +142,8 @@ steps:
           - "--os-version=9"
           - "--tags"
           - "not @Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   #
   # Flaky scenarios.  Theis should be skipped if there are no scenarios annotated with the @Flaky tag (as we should
@@ -169,8 +169,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_9_0"
           - "--tags=@Flaky"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 10 NDK r21 smoke tests'
     key: 'android-10-smoke'
@@ -188,5 +188,5 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_10_0"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'

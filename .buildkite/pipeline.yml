@@ -143,8 +143,8 @@ steps:
           run: android-ci
     env:
       INSTRUMENTATION_DEVICES: '["Google Nexus 5-4.4"]'
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: ':android: Android 4.4 NDK r16 smoke tests'
     key: 'android-4-4-smoke'
@@ -162,8 +162,8 @@ steps:
           - "--farm=bs"
           - "--device=ANDROID_4_4"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   # Android 11+ devices have the GWP-ASAN tool enabled which randomly samples native memory to
   # to detect misuse (such as use-after-free, buffer overflow). If a failure is detected then
@@ -188,8 +188,8 @@ steps:
           - "--os=android"
           - "--os-version=11"
           #- "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+    concurrency: 2
+    concurrency_group: 'sl-app'
 
   - label: 'Conditionally trigger full set of tests'
     command: sh -c .buildkite/pipeline_trigger.sh
