@@ -56,7 +56,7 @@ services:
       BUILDKITE_REPO:
 
   android-maze-runner:
-    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v5-cli
+    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner:bitbar-account-service-cli
     environment:
       DEBUG:
       BUILDKITE:
@@ -69,6 +69,7 @@ services:
       - ./build:/app/build
       - ./features/:/app/features/
       - ./maze_output:/app/maze_output
+    env_file: $DOCKER_ENV_FILE
 
   android-license-audit:
     build:
