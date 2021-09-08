@@ -13,11 +13,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r16.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_5_0"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
     soft_fail:
       - exit_status: "*"
 
@@ -35,11 +36,12 @@ steps:
         command:
         - "features/smoke_tests"
         - "--app=/app/build/release/fixture-r16.apk"
-        - "--farm=bs"
+        - "--farm=bb"
         - "--device=ANDROID_6_0"
         - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+        - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 7 NDK r19 smoke tests'
     key: 'android-7-smoke'
@@ -55,11 +57,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r19.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_7_1"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 8.1 NDK r19 smoke tests'
     key: 'android-8-1-smoke'
@@ -75,11 +78,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r19.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_8_1"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 smoke tests'
     key: 'android-9-smoke'
@@ -95,11 +99,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_9_0"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 1'
     depends_on:
@@ -116,10 +121,11 @@ steps:
         command:
           - "features/full_tests/batch_1"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_9_0"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 2'
     depends_on:
@@ -136,10 +142,11 @@ steps:
         command:
           - "features/full_tests/batch_2"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_9_0"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 10 NDK r21 smoke tests'
     key: 'android-10-smoke'
@@ -155,8 +162,9 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_10_0"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'

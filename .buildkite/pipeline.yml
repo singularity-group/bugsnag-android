@@ -212,11 +212,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r16.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_4_4"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   # Android 11+ devices have the GWP-ASAN tool enabled which randomly samples native memory to
   # to detect misuse (such as use-after-free, buffer overflow). If a failure is detected then
@@ -238,11 +239,12 @@ steps:
         command:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
-          - "--farm=bs"
+          - "--farm=bb"
           - "--device=ANDROID_11_0"
           - "--fail-fast"
-    concurrency: 9
-    concurrency_group: 'browserstack-app'
+          - "--os=android"
+    concurrency: 6
+    concurrency_group: 'bitbar-app'
 
   # - label: 'Conditionally trigger full set of tests'
   #   command: sh -c .buildkite/pipeline_trigger.sh
