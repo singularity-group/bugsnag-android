@@ -17,7 +17,7 @@ steps:
           - "--device=ANDROID_5_0"
           - "--fail-fast"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
     soft_fail:
       - exit_status: "*"
@@ -40,7 +40,7 @@ steps:
         - "--device=ANDROID_6_0"
         - "--fail-fast"
         - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 7 NDK r19 smoke tests'
@@ -61,7 +61,7 @@ steps:
           - "--device=ANDROID_7_1"
           - "--fail-fast"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 8.1 NDK r19 smoke tests'
@@ -82,7 +82,7 @@ steps:
           - "--device=ANDROID_8_1"
           - "--fail-fast"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 smoke tests'
@@ -103,7 +103,7 @@ steps:
           - "--device=ANDROID_9_0"
           - "--fail-fast"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 1'
@@ -124,7 +124,7 @@ steps:
           - "--farm=bb"
           - "--device=ANDROID_9_0"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 9 NDK r21 end-to-end tests - batch 2'
@@ -145,7 +145,7 @@ steps:
           - "--farm=bb"
           - "--device=ANDROID_9_0"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
 
   - label: ':android: Android 10 NDK r21 smoke tests'
@@ -166,5 +166,5 @@ steps:
           - "--device=ANDROID_10_0"
           - "--fail-fast"
           - "--os=android"
-    concurrency: 6
+    concurrency: 4
     concurrency_group: 'bitbar-app'
