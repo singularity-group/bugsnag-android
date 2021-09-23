@@ -213,7 +213,7 @@ steps:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r16.apk"
           - "--farm=bb"
-          - "--device=ANDROID_4_4"
+          - "--os-version=4.4"
           - "--fail-fast"
           - "--os=android"
     concurrency: 4
@@ -240,7 +240,7 @@ steps:
           - "features/smoke_tests"
           - "--app=/app/build/release/fixture-r21.apk"
           - "--farm=bb"
-          - "--device=ANDROID_11_0"
+          - "--os-version=11"
           - "--fail-fast"
           - "--os=android"
     concurrency: 4
