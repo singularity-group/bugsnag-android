@@ -22,6 +22,8 @@ void bsg_pb_reset(void);
 
 /**
  * Stack a string (object) level to the current path.
+ * Stacking too deep (>100 levels) or building a path that's too long (>500
+ * bytes) will cause this function to no-op.
  *
  * @param value The string to use as the map key for the new path level.
  */
@@ -29,6 +31,8 @@ void bsg_pb_stack_string(const char *value);
 
 /**
  * Stack an integer (array) level to the current path.
+ * Stacking too deep (>100 levels) or building a path that's too long (>500
+ * bytes) will cause this function to no-op.
  *
  * @param value The integer to use as the array index for the new path level.
  */
