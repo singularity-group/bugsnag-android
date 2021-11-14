@@ -6,9 +6,10 @@ import android.util.Log
 import com.unity3d.player.UnityPlayer
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal class AnrPlugin : Plugin {
+/** Troy: made public to expose [beforeNotifyAnr] */
+class AnrPlugin : Plugin {
 
-    internal companion object {
+    companion object {
 
         private const val LOAD_ERR_MSG = "Native library could not be linked. Bugsnag will " +
             "not report ANRs. See https://docs.bugsnag.com/platforms/android/anr-link-errors"
@@ -24,6 +25,12 @@ internal class AnrPlugin : Plugin {
             // The only check that will work across all Android versions is the isNativeMethod call.
             return javaTrace.first().isNativeMethod
         }
+
+        /** Troy added.
+         * Set this to manipulate the ANR event just before it is sent.
+         * Must run synchronously.
+         * Be efficient: if this blocks for too long, the ANR will not be reported to Bugsnag. */
+        var beforeNotifyAnr: ((Event) -> Unit)? = null
     }
 
     private val libraryLoader = LibraryLoader()
@@ -133,6 +140,8 @@ internal class AnrPlugin : Plugin {
                 val errThread = event.threads.find(Thread::getErrorReportingThread)
                 errThread?.stacktrace?.addAll(0, nativeFrames)
             }
+
+            beforeNotifyAnr?.invoke(event)
 
             // wait and poll for error info to be collected. this occurs just before the ANR dialog
             // is displayed
