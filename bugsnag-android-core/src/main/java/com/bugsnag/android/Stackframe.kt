@@ -60,7 +60,7 @@ class Stackframe : JsonStream.Streamable {
         }
 
     @JvmOverloads
-    internal constructor(
+    constructor(
         method: String?,
         file: String?,
         lineNumber: Number?,
