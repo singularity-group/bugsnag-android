@@ -6,6 +6,8 @@ import android.util.Log
 import com.unity3d.player.UnityPlayer
 import java.util.concurrent.atomic.AtomicBoolean
 
+typealias BeforeNotifyAnr = (List<NativeStackframe>, Event) -> Unit
+
 /** Troy: made public to expose [beforeNotifyAnr] */
 class AnrPlugin : Plugin {
 
@@ -30,7 +32,7 @@ class AnrPlugin : Plugin {
          * Set this to manipulate the ANR event just before it is sent.
          * Must run synchronously.
          * Be efficient: if this blocks for too long, the ANR will not be reported to Bugsnag. */
-        var beforeNotifyAnr: ((Event) -> Unit)? = null
+        var beforeNotifyAnr: BeforeNotifyAnr? = null
     }
 
     private val libraryLoader = LibraryLoader()
@@ -141,7 +143,7 @@ class AnrPlugin : Plugin {
                 errThread?.stacktrace?.addAll(0, nativeFrames)
             }
 
-            beforeNotifyAnr?.invoke(event)
+            beforeNotifyAnr?.invoke(nativeTrace, event)
 
             // wait and poll for error info to be collected. this occurs just before the ANR dialog
             // is displayed
