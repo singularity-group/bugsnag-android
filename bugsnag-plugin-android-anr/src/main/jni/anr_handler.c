@@ -263,13 +263,12 @@ _Noreturn static void *sigquit_watchdog_thread_main(__unused void *_) {
   for (;;) {
     watchdog_wait_for_trigger();
 
+    // Trigger Google ANR processing (occurs on a different thread).
+    bsg_google_anr_call();
+
     if (enabled) {
-      //bsg_google_anr_call(); // Troy/Jan: instead of Google ANR prompt, we force restart the app in Kotlin
       // Do our ANR processing.
       notify_anr_detected();
-    } else {
-      // Trigger Google ANR processing (occurs on a different thread).
-      bsg_google_anr_call();
     }
 
     // Unblock SIGQUIT again so that handle_sigquit() will run again.
