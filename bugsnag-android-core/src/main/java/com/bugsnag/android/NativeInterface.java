@@ -29,6 +29,13 @@ public class NativeInterface {
     @SuppressLint("StaticFieldLeak")
     private static Client client;
 
+    /** Troy: used by g4g bugsnag-extensions */
+    @Nullable
+    public static Client tryGetClient() {
+        // bugsnag-unity sets this field and doesn't use the Bugsnag.client.
+        return client;
+    }
+
     @NonNull
     private static Client getClient() {
         if (client != null) {
