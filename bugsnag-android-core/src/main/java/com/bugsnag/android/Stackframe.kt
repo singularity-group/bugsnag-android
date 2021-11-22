@@ -76,7 +76,8 @@ class Stackframe : JsonStream.Streamable {
         this.columnNumber = columnNumber
     }
 
-    private var nativeFrame: NativeStackframe? = null
+    var nativeFrame: NativeStackframe? = null
+        private set
 
     constructor(nativeFrame: NativeStackframe) : this(
         nativeFrame.method,
