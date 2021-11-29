@@ -10,7 +10,6 @@ apply plugin: "com.android.library"
 
 dependencies {
     api(project(":bugsnag-android-core"))
-    compileOnly files('libs/classes_unity2019.4.jar')
 }
 
 apply from: "../gradle/kotlin.gradle"
