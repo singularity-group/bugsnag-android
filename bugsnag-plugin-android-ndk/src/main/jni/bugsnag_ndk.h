@@ -4,17 +4,12 @@
 #ifndef BUGSNAG_NDK_H
 #define BUGSNAG_NDK_H
 
-#include <android/log.h>
 #include <stdbool.h>
 
 #include "../assets/include/bugsnag.h"
 #include "event.h"
+#include "utils/logger.h"
 #include "utils/stack_unwinder.h"
-
-#ifndef BUGSNAG_LOG
-#define BUGSNAG_LOG(fmt, ...)                                                  \
-  __android_log_print(ANDROID_LOG_WARN, "BugsnagNDK", fmt, ##__VA_ARGS__)
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,8 +68,18 @@ typedef struct {
   bool crash_handled;
 
   bsg_on_error on_error;
+
+  /**
+   * Controls whether we should capture and serialize the state of all threads
+   * at the time of an error.
+   */
+  bsg_thread_send_policy send_threads;
 } bsg_environment;
 
+/**
+ * Get the configured unwind style for non-async-safe environments.
+ * DO NOT USE THIS IN A SIGNAL HANDLER!
+ */
 bsg_unwinder bsg_configured_unwind_style();
 
 /**

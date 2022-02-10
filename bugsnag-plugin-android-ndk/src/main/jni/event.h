@@ -24,10 +24,17 @@
  */
 #define BUGSNAG_DEFAULT_EX_TYPE "c"
 #endif
+#ifndef BUGSNAG_THREADS_MAX
+/**
+ * Maximum number of threads recorded for an event. Configures a default if not
+ * defined.
+ */
+#define BUGSNAG_THREADS_MAX 255
+#endif
 /**
  * Version of the bugsnag_event struct. Serialized to report header.
  */
-#define BUGSNAG_EVENT_VERSION 6
+#define BUGSNAG_EVENT_VERSION 8
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,15 +50,15 @@ typedef struct {
   char type[32];
   char version[32];
   char active_screen[64];
-  int version_code;
+  int64_t version_code;
   char build_uuid[64];
-  time_t duration;
-  time_t duration_in_foreground;
+  int64_t duration;
+  int64_t duration_in_foreground;
   /**
    * The elapsed time in milliseconds between when the system clock starts and
    * when bugsnag-ndk install() is called
    */
-  time_t duration_ms_offset;
+  int64_t duration_ms_offset;
   /**
    * The elapsed time in the foreground in milliseconds between when the app
    * first enters the foreground and when bugsnag-ndk install() is called, if
@@ -82,7 +89,7 @@ typedef struct {
   char os_build[64];
   char os_version[64];
   char os_name[64];
-  long total_memory;
+  int64_t total_memory;
 } bsg_device_info;
 
 /**
@@ -179,6 +186,23 @@ typedef struct {
 } bsg_notifier;
 
 typedef struct {
+  pid_t id;
+  char name[16];
+  char state[13];
+} bsg_thread;
+
+typedef enum {
+  SEND_THREADS_ALWAYS = 0,
+  SEND_THREADS_UNHANDLED_ONLY = 1,
+  SEND_THREADS_NEVER = 2
+} bsg_thread_send_policy;
+
+typedef struct {
+  char *name;
+  char *variant;
+} bsg_feature_flag;
+
+typedef struct {
   bsg_notifier notifier;
   bsg_app_info app;
   bsg_device_info device;
@@ -202,15 +226,29 @@ typedef struct {
   char grouping_hash[64];
   bool unhandled;
   char api_key[64];
+
+  int thread_count;
+  bsg_thread threads[BUGSNAG_THREADS_MAX];
+
+  /**
+   * The number of feature flags currently specified.
+   */
+  size_t feature_flag_count;
+
+  /**
+   * Pointer to the current feature flags. This is dynamically allocated and
+   * serialized/deserialized separately to the rest of the struct.
+   */
+  bsg_feature_flag *feature_flags;
 } bugsnag_event;
 
 void bugsnag_event_add_breadcrumb(bugsnag_event *event,
                                   bugsnag_breadcrumb *crumb);
 void bugsnag_event_clear_breadcrumbs(bugsnag_event *event);
-void bugsnag_event_start_session(bugsnag_event *event, char *session_id,
-                                 char *started_at, int handled_count,
+void bugsnag_event_start_session(bugsnag_event *event, const char *session_id,
+                                 const char *started_at, int handled_count,
                                  int unhandled_count);
-bool bugsnag_event_has_session(bugsnag_event *event);
+bool bugsnag_event_has_session(const bugsnag_event *event);
 
 void bsg_add_metadata_value_double(bugsnag_metadata *metadata,
                                    const char *section, const char *name,

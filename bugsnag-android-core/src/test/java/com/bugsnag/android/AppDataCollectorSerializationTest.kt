@@ -10,10 +10,10 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameter
 import org.junit.runners.Parameterized.Parameters
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyInt
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 
 @RunWith(Parameterized::class)
 internal class AppDataCollectorSerializationTest {
@@ -74,8 +74,18 @@ internal class AppDataCollectorSerializationTest {
     @Parameter
     lateinit var testCase: Pair<App, String>
 
+    private val eventMapper = BugsnagEventMapper(NoopLogger)
+
     @Test
     fun testJsonSerialisation() {
         verifyJsonMatches(testCase.first, testCase.second)
+    }
+
+    @Test
+    fun testJsonDeserialization() {
+        val (appModel, jsonFixture) = testCase
+        verifyJsonParser(appModel, jsonFixture) { jsonMap ->
+            eventMapper.convertAppWithState(jsonMap)
+        }
     }
 }

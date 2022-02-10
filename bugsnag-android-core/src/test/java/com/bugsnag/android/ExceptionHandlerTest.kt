@@ -10,9 +10,9 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread
 
@@ -71,6 +71,19 @@ internal class ExceptionHandlerTest {
         val exceptionHandler = ExceptionHandler(client, NoopLogger)
         val thread = Thread.currentThread()
         exceptionHandler.uncaughtException(thread, RuntimeException("Whoops"))
+        assertTrue(propagated)
+    }
+
+    @Test
+    fun exceptionPropagatedWhenDiscarded() {
+        val runtimeException = RuntimeException("Whoops")
+        `when`(cfg.shouldDiscardError(runtimeException)).thenReturn(true)
+
+        var propagated = false
+        Thread.setDefaultUncaughtExceptionHandler { _, _ -> propagated = true }
+        val exceptionHandler = ExceptionHandler(client, NoopLogger)
+        val thread = Thread.currentThread()
+        exceptionHandler.uncaughtException(thread, runtimeException)
         assertTrue(propagated)
     }
 

@@ -30,13 +30,13 @@ internal class EventApiTest {
 
     @Test
     fun getUser() {
-        assertEquals(event.impl._user, event.getUser())
+        assertEquals(event.impl.userImpl, event.getUser())
     }
 
     @Test
     fun setUser() {
         event.setUser("99", "boo@example.com", "Boo")
-        assertEquals(User("99", "boo@example.com", "Boo"), event.impl._user)
+        assertEquals(User("99", "boo@example.com", "Boo"), event.impl.userImpl)
     }
 
     @Test
@@ -63,5 +63,42 @@ internal class EventApiTest {
         event.addMetadata("foo", "wham", "bar")
         event.clearMetadata("foo", "wham")
         assertNull(event.impl.metadata.getMetadata("foo", "wham"))
+    }
+
+    @Test
+    fun addFeatureFlagWithoutVariant() {
+        event.addFeatureFlag("demo_mode")
+        assertEquals(
+            listOf(FeatureFlag("demo_mode")),
+            event.impl.featureFlags.toList()
+        )
+    }
+
+    @Test
+    fun addFeatureFlag() {
+        event.addFeatureFlag("sample_group", "a")
+        assertEquals(
+            listOf(FeatureFlag("sample_group", "a")),
+            event.impl.featureFlags.toList()
+        )
+    }
+
+    @Test
+    fun clearFeatureFlag() {
+        event.addFeatureFlag("demo_group")
+        event.addFeatureFlag("sample_group", "a")
+        event.clearFeatureFlag("demo_group")
+        assertEquals(
+            listOf(FeatureFlag("sample_group", "a")),
+            event.impl.featureFlags.toList()
+        )
+    }
+
+    @Test
+    fun clearFeatureFlags() {
+        event.addFeatureFlag("demo_group")
+        event.addFeatureFlag("sample_group", "a")
+        event.clearFeatureFlags()
+        assertEquals(emptyList<FeatureFlag>(), event.impl.featureFlags.toList())
     }
 }

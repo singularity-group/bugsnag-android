@@ -24,6 +24,7 @@ internal class ThreadSerializationTest {
                 "main-one",
                 ThreadType.ANDROID,
                 true,
+                Thread.State.RUNNABLE,
                 Stacktrace(
                     stacktrace,
                     emptySet(),
@@ -43,6 +44,7 @@ internal class ThreadSerializationTest {
                 "main-one",
                 ThreadType.ANDROID,
                 false,
+                Thread.State.RUNNABLE,
                 Stacktrace(
                     stacktrace1,
                     emptySet(),
@@ -76,6 +78,7 @@ internal class ThreadSerializationTest {
                 "main-one",
                 ThreadType.ANDROID,
                 true,
+                Thread.State.RUNNABLE,
                 trace,
                 NoopLogger
             )
@@ -98,6 +101,7 @@ internal class ThreadSerializationTest {
                 "main-one",
                 ThreadType.ANDROID,
                 false,
+                Thread.State.RUNNABLE,
                 trace,
                 NoopLogger
             )
@@ -107,6 +111,14 @@ internal class ThreadSerializationTest {
     @Parameter
     lateinit var testCase: Pair<Thread, String>
 
+    private val eventMapper = BugsnagEventMapper(NoopLogger)
+
     @Test
     fun testJsonSerialisation() = verifyJsonMatches(testCase.first, testCase.second)
+
+    @Test
+    fun testJsonDeserialisation() =
+        verifyJsonParser(testCase.first, testCase.second) {
+            eventMapper.convertThread(it)
+        }
 }

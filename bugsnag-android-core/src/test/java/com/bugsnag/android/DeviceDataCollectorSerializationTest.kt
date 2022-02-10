@@ -11,9 +11,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameter
 import org.junit.runners.Parameterized.Parameters
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import java.io.File
 
 @RunWith(Parameterized::class)
@@ -72,6 +72,8 @@ internal class DeviceDataCollectorSerializationTest {
     @Parameter
     lateinit var testCase: Pair<Device, String>
 
+    private val eventMapper = BugsnagEventMapper(NoopLogger)
+
     @Test
     fun testJsonSerialisation() {
         // sanitise device-specific fields before serializing
@@ -85,5 +87,12 @@ internal class DeviceDataCollectorSerializationTest {
         }
 
         verifyJsonMatches(device, testCase.second)
+    }
+
+    @Test
+    fun testJsonDeserialization() {
+        verifyJsonParser(testCase.first, testCase.second) {
+            eventMapper.convertDeviceWithState(it)
+        }
     }
 }

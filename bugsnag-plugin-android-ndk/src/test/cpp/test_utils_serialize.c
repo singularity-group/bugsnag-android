@@ -1,7 +1,14 @@
-#include <greatest/greatest.h>
-#include <utils/serializer.h>
+#include <fcntl.h>
 #include <stdlib.h>
-#include <utils/migrate.h>
+#include <unistd.h>
+
+#include <greatest/greatest.h>
+#include <parson/parson.h>
+
+#include <featureflags.h>
+#include <utils/serializer.h>
+#include <utils/serializer/migrate.h>
+#include <utils/serializer/event_reader.h>
 
 #define SERIALIZE_TEST_FILE "/data/data/com.bugsnag.android.ndk.test/cache/foo.crash"
 
@@ -118,10 +125,31 @@ void generate_basic_report(bugsnag_event *event) {
   strcpy(event->user.id, "fex");
   event->device.total_memory = 234678100;
   event->app.duration = 6502;
-  bugsnag_event_add_metadata_bool(event, "metrics", "experimentX", false);
-  bugsnag_event_add_metadata_string(event, "metrics", "subject", "percy");
-  bugsnag_event_add_metadata_string(event, "app", "weather", "rain");
-  bugsnag_event_add_metadata_double(event, "metrics", "counter", 47.8);
+  event->metadata.value_count = 4;
+  event->metadata.values[0] = (bsg_metadata_value) {
+    .name = {"weather"},
+    .section = {"app"},
+    .type = BSG_METADATA_CHAR_VALUE,
+    .char_value = {"rain"},
+  };
+  event->metadata.values[1] = (bsg_metadata_value) {
+    .name = {"experimentX"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_BOOL_VALUE,
+    .bool_value = false,
+  };
+  event->metadata.values[2] = (bsg_metadata_value) {
+    .name = {"subject"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_CHAR_VALUE,
+    .char_value = {"percy"},
+  };
+  event->metadata.values[3] = (bsg_metadata_value) {
+    .name = {"counter"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_NUMBER_VALUE,
+    .double_value = 47.8,
+  };
 
   event->crumb_count = 0;
   event->crumb_first_index = 0;
@@ -139,6 +167,56 @@ void generate_basic_report(bugsnag_event *event) {
   strcpy(event->notifier.version, "1.0");
   strcpy(event->notifier.url, "bugsnag.com");
   strcpy(event->notifier.name, "Test Notifier");
+}
+
+bugsnag_report_v5 *bsg_generate_report_v5(void) {
+  bugsnag_report_v5 *event = calloc(1, sizeof(bugsnag_report_v5));
+  strcpy(event->grouping_hash, "foo-hash");
+  strcpy(event->api_key, "5d1e5fbd39a74caa1200142706a90b20");
+  strcpy(event->context, "SomeActivity");
+  strcpy(event->error.errorClass, "SIGBUS");
+  strcpy(event->error.errorMessage, "POSIX is serious about oncoming traffic");
+  event->error.stacktrace[0].frame_address = 454379;
+  event->error.stacktrace[1].frame_address = 342334;
+  event->error.frame_count = 2;
+  strcpy(event->error.type, "C");
+  strcpy(event->error.stacktrace[0].method, "makinBacon");
+  strcpy(event->app.id, "com.example.PhotoSnapPlus");
+  strcpy(event->app.release_stage, "リリース");
+  strcpy(event->app.version, "2.0.52");
+  event->app.version_code = 57;
+  strcpy(event->app.build_uuid, "1234-9876-adfe");
+  strcpy(event->device.manufacturer, "HI-TEC™");
+  strcpy(event->device.model, "Rasseur");
+  strcpy(event->device.locale, "en_AU#Melbun");
+  strcpy(event->device.os_name, "android");
+  strcpy(event->user.email, "fenton@io.example.com");
+  strcpy(event->user.id, "fex");
+  event->device.total_memory = 234678100;
+  event->app.duration = 6502;
+  bugsnag_event_add_metadata_bool(event, "metrics", "experimentX", false);
+  bugsnag_event_add_metadata_string(event, "metrics", "subject", "percy");
+  bugsnag_event_add_metadata_string(event, "app", "weather", "rain");
+  bugsnag_event_add_metadata_double(event, "metrics", "counter", 47.8);
+
+  bugsnag_breadcrumb *crumb1 = init_breadcrumb("decrease torque", "Moving laterally 26º",
+                                               BSG_CRUMB_STATE);
+  bugsnag_breadcrumb *crumb2 = init_breadcrumb("enable blasters", "this is a drill.",
+                                               BSG_CRUMB_USER);
+  memcpy(&event->breadcrumbs[0], crumb1, sizeof(bugsnag_breadcrumb));
+  memcpy(&event->breadcrumbs[1], crumb2, sizeof(bugsnag_breadcrumb));
+  event->crumb_count = 2;
+  event->crumb_first_index = 0;
+
+  event->handled_events = 1;
+  event->unhandled_events = 1;
+  strcpy(event->session_id, "f1ab");
+  strcpy(event->session_start, "2019-03-19T12:58:19+00:00");
+
+  strcpy(event->notifier.version, "1.0");
+  strcpy(event->notifier.url, "bugsnag.com");
+  strcpy(event->notifier.name, "Test Notifier");
+  return event;
 }
 
 bugsnag_report_v4 *bsg_generate_report_v4(void) {
@@ -255,11 +333,31 @@ bugsnag_report_v2 *bsg_generate_report_v2(void) {
   strcpy(event->user.id, "fex");
   event->device.total_memory = 234678100;
   event->app.duration = 6502;
-  bugsnag_event_add_metadata_bool(event, "metrics", "experimentX", false);
-  bugsnag_event_add_metadata_string(event, "metrics", "subject", "percy");
-  bugsnag_event_add_metadata_string(event, "app", "weather", "rain");
-  bugsnag_event_add_metadata_double(event, "metrics", "counter", 47.8);
-
+  event->metadata.value_count = 4;
+  event->metadata.values[0] = (bsg_metadata_value) {
+    .name = {"weather"},
+    .section = {"app"},
+    .type = BSG_METADATA_CHAR_VALUE,
+    .char_value = {"rain"},
+  };
+  event->metadata.values[1] = (bsg_metadata_value) {
+    .name = {"experimentX"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_BOOL_VALUE,
+    .bool_value = false,
+  };
+  event->metadata.values[2] = (bsg_metadata_value) {
+    .name = {"subject"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_CHAR_VALUE,
+    .char_value = {"percy"},
+  };
+  event->metadata.values[3] = (bsg_metadata_value) {
+    .name = {"counter"},
+    .section = {"metrics"},
+    .type = BSG_METADATA_NUMBER_VALUE,
+    .double_value = 47.8,
+  };
 
   event->handled_events = 1;
   event->unhandled_events = 1;
@@ -370,7 +468,7 @@ char *test_read_last_run_info(const bsg_environment *env) {
   return buf;
 }
 
-test_last_run_info_serialization(void) {
+TEST test_last_run_info_serialization(void) {
   bsg_environment *env = calloc(1, sizeof(bsg_environment));
   strcpy(env->last_run_info_path, SERIALIZE_TEST_FILE);
   
@@ -404,9 +502,25 @@ TEST test_report_to_file(void) {
   PASS();
 }
 
+TEST test_report_with_feature_flags_to_file(void) {
+  bsg_environment *env = calloc(1, sizeof(bsg_environment));
+  env->report_header.version = 8;
+  env->report_header.big_endian = 1;
+  bugsnag_event *report = bsg_generate_event();
+  memcpy(&env->next_event, report, sizeof(bugsnag_event));
+  bsg_set_feature_flag(&env->next_event, "sample_group", "a");
+  bsg_set_feature_flag(&env->next_event, "demo_mode", NULL);
+  strcpy(env->report_header.os_build, "macOS Sierra");
+  strcpy(env->next_event_path, SERIALIZE_TEST_FILE);
+  ASSERT(bsg_serialize_event_to_file(env));
+  free(report);
+  free(env);
+  PASS();
+}
+
 TEST test_file_to_report(void) {
   bsg_environment *env = calloc(1, sizeof(bsg_environment));
-  env->report_header.version = 5;
+  env->report_header.version = BSG_MIGRATOR_CURRENT_VERSION;
   env->report_header.big_endian = 1;
   strcpy(env->report_header.os_build, "macOS Sierra");
   bugsnag_event *generated_report = bsg_generate_event();
@@ -421,6 +535,28 @@ TEST test_file_to_report(void) {
   free(generated_report);
   free(env);
   free(report);
+  PASS();
+}
+
+TEST test_report_with_feature_flags_from_file(void) {
+  bsg_environment *env = calloc(1, sizeof(bsg_environment));
+  env->report_header.version = 8;
+  env->report_header.big_endian = 1;
+  bugsnag_event *report = bsg_generate_event();
+  memcpy(&env->next_event, report, sizeof(bugsnag_event));
+  bsg_set_feature_flag(&env->next_event, "sample_group", "a");
+  bsg_set_feature_flag(&env->next_event, "demo_mode", NULL);
+  strcpy(env->report_header.os_build, "macOS Sierra");
+  strcpy(env->next_event_path, "/data/data/com.bugsnag.android.ndk.test/cache/features.crash");
+  ASSERT(bsg_serialize_event_to_file(env));
+
+  bugsnag_event *event = bsg_deserialize_event_from_file("/data/data/com.bugsnag.android.ndk.test/cache/features.crash");
+
+  ASSERT_EQ(2, event->feature_flag_count);
+
+  free(report);
+  free(env);
+  free(event);
   PASS();
 }
 
@@ -441,6 +577,7 @@ TEST test_report_v1_migration(void) {
   ASSERT_EQ(1, event->handled_events);
   ASSERT_EQ(1, event->unhandled_events);
   ASSERT_FALSE(event->app.is_launching);
+  ASSERT_EQ(0, event->thread_count);
 
   free(generated_report);
   free(env);
@@ -479,8 +616,8 @@ TEST test_report_v2_migration(void) {
   ASSERT_STR_EQ("android", event->device.os_name);
 
   // package_name/version_name are migrated to metadata
-  ASSERT_STR_EQ("com.example.foo", event->metadata.values[0].char_value);
-  ASSERT_STR_EQ("2.5", event->metadata.values[1].char_value);
+  ASSERT_STR_EQ("com.example.foo", event->metadata.values[4].char_value);
+  ASSERT_STR_EQ("2.5", event->metadata.values[5].char_value);
 
   // breadcrumbs are migrated correctly
   ASSERT_EQ(2, event->crumb_count);
@@ -495,6 +632,7 @@ TEST test_report_v2_migration(void) {
   ASSERT_STR_EQ("message", val->key);
   ASSERT_STR_EQ("Moving laterally 26º", val->value);
   ASSERT_FALSE(event->app.is_launching);
+  ASSERT_EQ(0, event->thread_count);
 
   free(generated_report);
   free(env);
@@ -527,6 +665,7 @@ TEST test_report_v3_migration(void) {
   ASSERT_STR_EQ("POSIX is serious about oncoming traffic", event->error.errorMessage);
   ASSERT_STR_EQ("C", event->error.type);
   ASSERT_FALSE(event->app.is_launching);
+  ASSERT_EQ(0, event->thread_count);
 
   free(generated_report);
   free(env);
@@ -556,6 +695,7 @@ TEST test_report_v4_migration(void) {
   ASSERT_STR_EQ("1234-9876-adfe", event->app.build_uuid);
   ASSERT_FALSE(event->app.in_foreground);
   ASSERT_FALSE(event->app.is_launching);
+  ASSERT_EQ(0, event->thread_count);
 
   free(generated_report);
   free(env);
@@ -609,6 +749,8 @@ TEST test_report_v5_migration(void) {
     free(str);
   }
 
+  ASSERT_EQ(0, event->thread_count);
+
   free(generated_report);
   free(env);
   free(event);
@@ -640,6 +782,36 @@ TEST test_report_v5_migration_crumb_index(void) {
   ASSERT_STR_EQ("13", event->breadcrumbs[1].name);
   ASSERT_STR_EQ("26", event->breadcrumbs[14].name);
   ASSERT_STR_EQ("36", event->breadcrumbs[24].name);
+
+  free(generated_report);
+  free(env);
+  free(event);
+  PASS();
+}
+
+TEST test_report_v6_migration(void) {
+  bsg_environment *env = calloc(1, sizeof(bsg_environment));
+  env->report_header.version = 4;
+  env->report_header.big_endian = 1;
+  strcpy(env->report_header.os_build, "macOS Sierra");
+
+  bugsnag_report_v5 *generated_report = bsg_generate_report_v5();
+  memcpy(&env->next_event, generated_report, sizeof(bugsnag_report_v5));
+  strcpy(env->next_event_path, SERIALIZE_TEST_FILE);
+  bsg_serialize_report_v5_to_file(env, generated_report);
+
+  bugsnag_event *event = bsg_deserialize_event_from_file(SERIALIZE_TEST_FILE);
+  ASSERT(event != NULL);
+
+  // values are migrated correctly
+  ASSERT_STR_EQ("com.example.PhotoSnapPlus", event->app.id);
+  ASSERT_STR_EQ("リリース", event->app.release_stage);
+  ASSERT_STR_EQ("2.0.52", event->app.version);
+  ASSERT_EQ(57, event->app.version_code);
+  ASSERT_STR_EQ("1234-9876-adfe", event->app.build_uuid);
+  ASSERT_FALSE(event->app.in_foreground);
+  ASSERT_FALSE(event->app.is_launching);
+  ASSERT_EQ(0, event->thread_count);
 
   free(generated_report);
   free(env);
@@ -826,6 +998,8 @@ SUITE(suite_json_serialization) {
 SUITE(suite_struct_to_file) {
   RUN_TEST(test_report_to_file);
   RUN_TEST(test_file_to_report);
+  RUN_TEST(test_report_with_feature_flags_to_file);
+  RUN_TEST(test_report_with_feature_flags_from_file);
 }
 
 SUITE(suite_struct_migration) {
@@ -835,5 +1009,6 @@ SUITE(suite_struct_migration) {
   RUN_TEST(test_report_v4_migration);
   RUN_TEST(test_report_v5_migration);
   RUN_TEST(test_report_v5_migration_crumb_index);
+  RUN_TEST(test_report_v6_migration);
   RUN_TEST(test_migrate_app_v2);
 }

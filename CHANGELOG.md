@@ -1,5 +1,113 @@
 # Changelog
 
+## 5.19.2 (2022-01-31)
+
+### Bug fixes
+
+* Fixed an issue where feature-flags were not always sent if an OnSendCallback was configured
+  [#1589](https://github.com/bugsnag/bugsnag-android/pull/1589)
+
+* Fix a bug where api keys set in React Native callbacks were ignored
+  [#1592](https://github.com/bugsnag/bugsnag-android/pull/1592)
+
+## 5.19.1 (2022-01-21)
+
+### Bug fixes
+
+* Discarded unhandled exceptions are propagated to any previously registered handlers
+  [#1584](https://github.com/bugsnag/bugsnag-android/pull/1584)
+  
+* Fix SIGABRT crashes caused by race conditions in the NDK layer
+  [#1585](https://github.com/bugsnag/bugsnag-android/pull/1585)
+
+## 5.19.0 (2022-01-12)
+
+* New APIs to support forthcoming feature flag and experiment functionality. For more information, please see https://docs.bugsnag.com/product/features-experiments.
+
+### Enhancements
+
+* Explicitly define Kotlin api/language versions
+  [#1564](https://github.com/bugsnag/bugsnag-android/pull/1564)
+
+* Build project with Kotlin 1.4, maintain compat with Kotlin 1.3
+  [#1565](https://github.com/bugsnag/bugsnag-android/pull/1565)
+
+## 5.18.0 (2022-01-05)
+
+### Enhancements
+
+* Improve the memory use and performance overhead when handling the delivery response status codes
+  [#1558](https://github.com/bugsnag/bugsnag-android/pull/1558)
+* Harden ndk layer through use of const keyword
+  [#1566](https://github.com/bugsnag/bugsnag-android/pull/1566)
+
+### Bug fixes
+
+* Delete persisted NDK events earlier in delivery process
+  [#1562](https://github.com/bugsnag/bugsnag-android/pull/1562)
+
+* Add null checks for strlen()
+  [#1563](https://github.com/bugsnag/bugsnag-android/pull/1563)
+
+* Catch IOException when logging response status code
+  [#1567](https://github.com/bugsnag/bugsnag-android/pull/1567)
+
+## 5.17.0 (2021-12-08)
+
+### Enhancements
+
+* Bump compileSdkVersion to apiLevel 31
+  [#1536](https://github.com/bugsnag/bugsnag-android/pull/1536)
+
+### Bug fixes
+
+* Flush in-memory sessions first
+  [#1538](https://github.com/bugsnag/bugsnag-android/pull/1538)
+
+* Avoid unnecessary network connectivity change breadcrumb
+  [#1540](https://github.com/bugsnag/bugsnag-android/pull/1540)
+  [#1546](https://github.com/bugsnag/bugsnag-android/pull/1546)
+
+* Clear native stacktrace memory in `bugsnag_notify_env` before attempting to unwind the stack
+  [#1543](https://github.com/bugsnag/bugsnag-android/pull/1543)
+
+## 5.16.0 (2021-11-29)
+
+### Bug fixes
+
+* Increase resilience of NDK stackframe method capture
+  [#1484](https://github.com/bugsnag/bugsnag-android/pull/1484)
+
+* `redactedKeys` now correctly apply to metadata on Event breadcrumbs
+  [#1526](https://github.com/bugsnag/bugsnag-android/pull/1526)
+  
+* Improved the robustness of automatically logged `ERROR` breadcrumbs
+  [#1531](https://github.com/bugsnag/bugsnag-android/pull/1531)
+  
+* Improve performance on the breadcrumb storage "hot path" by removing Date formatting
+  [#1525](https://github.com/bugsnag/bugsnag-android/pull/1525)
+
+## 5.15.0 (2021-11-04)
+
+### Bug fixes
+
+* Avoid reporting false-positive background ANRs with improved foreground detection
+  [#1429](https://github.com/bugsnag/bugsnag-android/pull/1429)
+
+* Prevent events being attached to phantom sessions when they are blocked by an `OnSessionCallback`
+  [#1434](https://github.com/bugsnag/bugsnag-android/pull/1434)
+
+* Plugins will correctly mirror metadata added using `addMetadata(String, Map)`
+  [#1454](https://github.com/bugsnag/bugsnag-android/pull/1454)
+
+## 5.14.0 (2021-09-29)
+
+### Enhancements 
+
+* Capture and report thread state (running, sleeping, etc.) for Android Runtime and Native threads
+  [#1367](https://github.com/bugsnag/bugsnag-android/pull/1367)
+  [#1390](https://github.com/bugsnag/bugsnag-android/pull/1390)
+
 ## 5.13.0 (2021-09-22)
 
 * Capture breadcrumbs for OkHttp network requests
@@ -18,7 +126,7 @@
   [#1375](https://github.com/bugsnag/bugsnag-android/pull/1375)
 
 * Use SystemClock.elapsedRealtime to track `app.durationInForeground`
-  [#1375](https://github.com/bugsnag/bugsnag-android/pull/1375)
+  [#1378](https://github.com/bugsnag/bugsnag-android/pull/1378)
 
 ## 5.12.0 (2021-08-26)
 

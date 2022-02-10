@@ -17,6 +17,7 @@ internal class EventDeserializer(
     @Suppress("UNCHECKED_CAST")
     override fun deserialize(map: MutableMap<String, Any?>): Event {
         val severityReason = map["severityReason"] as Map<String, Any>
+        val featureFlags = map["featureFlags"] as? List<Map<String, Any?>>
         val severityReasonType = severityReason["type"] as String
         val severity = map["severity"] as String
         val unhandled = map["unhandled"] as Boolean
@@ -27,6 +28,7 @@ internal class EventDeserializer(
             Severity.valueOf(severity.toUpperCase(Locale.US)),
             unhandled,
             originalUnhandled,
+            null,
             null
         )
 
@@ -35,6 +37,10 @@ internal class EventDeserializer(
         event.context = map["context"] as String?
         event.groupingHash = map["groupingHash"] as String?
 
+        // apiKey if it exists in the map and is not empty
+        val apiKey = (map["apiKey"] as? String)?.takeIf { it.isNotEmpty() }
+        apiKey?.let { event.apiKey = apiKey }
+
         // app/device
         event.app = appDeserializer.deserialize(map["app"] as MutableMap<String, Any>)
         event.device = deviceDeserializer.deserialize(map["device"] as MutableMap<String, Any>)
@@ -42,6 +48,12 @@ internal class EventDeserializer(
         // user
         val user = UserDeserializer().deserialize(map["user"] as MutableMap<String, Any>)
         event.setUser(user.id, user.email, user.name)
+
+        // featureFlags
+        event.clearFeatureFlags() // we discard the featureFlags from Android native
+        featureFlags?.forEach { flagMap ->
+            event.addFeatureFlag(flagMap["featureFlag"] as String, flagMap["variant"] as String?)
+        }
 
         // errors
         val errors = map["errors"] as List<Map<String, Any?>>
@@ -54,7 +66,8 @@ internal class EventDeserializer(
         if (map.containsKey("nativeStack") && event.errors.isNotEmpty()) {
             runCatching {
                 val jsError = event.errors.first()
-                val nativeStackDeserializer = NativeStackDeserializer(projectPackages, client.config)
+                val nativeStackDeserializer =
+                    NativeStackDeserializer(projectPackages, client.config)
                 val nativeStack = nativeStackDeserializer.deserialize(map)
                 jsError.stacktrace.addAll(0, nativeStack)
             }

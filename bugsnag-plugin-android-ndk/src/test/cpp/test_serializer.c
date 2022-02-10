@@ -45,7 +45,7 @@ void loadAppMetadataTestCase(bugsnag_event *event) {
 void loadDeviceTestCase(bugsnag_event *event) {
     bsg_device_info *device = &event->device;
     device->api_level = 29;
-    bsg_strncpy_safe(device->cpu_abi[0].value, "x86", sizeof(device->cpu_abi[0].value));
+    bsg_strncpy(device->cpu_abi[0].value, "x86", sizeof(device->cpu_abi[0].value));
     device->cpu_abi_count = 1;
     strcpy(device->orientation, "portrait");
 
@@ -140,11 +140,11 @@ void loadBreadcrumbsTestCase(bugsnag_event *event) {
     strcpy(data->values[0].name, "bool");
     data->values[0].bool_value = true;
 
-    // third breadcrumb
+    // third breadcrumb - using updated timestamp format
     crumb = &event->breadcrumbs[0];
     crumb->type = BSG_CRUMB_NAVIGATION;
     strcpy(crumb->name, "MainActivity");
-    strcpy(crumb->timestamp, "2018-10-08T12:07:15Z");
+    strcpy(crumb->timestamp, "t1539000435563");
 
     // metadata
     data = &crumb->metadata;
@@ -175,6 +175,14 @@ bugsnag_stackframe *loadStackframeTestCase() {
     strcpy(data->filename, "foo.c");
     strcpy(data->method, "bar()");
     return data;
+}
+
+void loadThreadTestCase(bugsnag_event *event) {
+    event->thread_count = 1;
+    bsg_thread *thread = &event->threads[0];
+    strcpy(thread->name, "Binder 1");
+    strcpy(thread->state, "Running");
+    thread->id = 1234;
 }
 
 void loadExceptionTestCase(bugsnag_event *event) {

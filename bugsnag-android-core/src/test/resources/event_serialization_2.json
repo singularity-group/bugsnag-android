@@ -23,7 +23,7 @@
     "osVersion": "7.1",
     "runtimeVersions": {
       "osBuild": "bulldog",
-      "androidApiLevel": 24
+      "androidApiLevel": "24"
     },
     "totalMemory": 109230923452,
     "freeDisk": 22234423124,
@@ -33,5 +33,6 @@
   },
   "breadcrumbs": [],
   "groupingHash": "herpderp",
-  "threads": []
+  "threads": [],
+  "featureFlags": []
 }
