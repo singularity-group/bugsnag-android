@@ -64,7 +64,7 @@ class Stackframe : JsonStream.Streamable {
     var type: ErrorType? = null
 
     @JvmOverloads
-    internal constructor(
+    constructor(
         method: String?,
         file: String?,
         lineNumber: Number?,
